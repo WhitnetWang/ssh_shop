@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="cn.itcast.shop.categorysecond.domain.CategorySecond" table="categorysecond">
+		<id name="csid" column="csid">
+			<generator class="native"></generator>
+		</id>
+		<property name="csname" column="csname"></property>
+		<many-to-one name="category" column="cid" class="cn.itcast.shop.category.domain.Category"></many-to-one>
+	</class>
+</hibernate-mapping>

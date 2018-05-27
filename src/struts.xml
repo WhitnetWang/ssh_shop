@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<package name="ssh_shop2" extends="struts-default" namespace="/">
+		<!-- 进入主页 -->
+		<action name="index" class="indexAction">
+			<result>/WEB-INF/jsp/index.jsp</result>
+		</action>
+		<!-- 验证码 -->
+		<action name="checkcodeImgAction" class="checkcodeImgAction"></action>
+		<!-- 用户模块 -->
+		<action name="user_*" class="userAction" method="{1}">
+			<!-- 跳转到注册页面 -->
+			<result name="toRegistPage">/WEB-INF/jsp/regist.jsp</result>
+			<!-- 字段校验失败 -->
+			<result name="input">/WEB-INF/jsp/regist.jsp</result>
+			<!-- 注册成功 -->
+			<result name="regist">/WEB-INF/jsp/msg.jsp</result>
+			<!-- 到登录页面 -->
+			<result name="toLoginPage">/WEB-INF/jsp/login.jsp</result>
+			<!-- 登录成功 -->
+			<result name="login" type="redirectAction">index</result>
+			<!-- 用户退出 -->
+			<result name="quit" type="redirectAction">index</result>
+		</action>
+		<!-- 一级分类模块 -->
+		<action name="category_*" class="categoryAction" method="{1}">
+			
+		</action>
+		<!-- 商品模块 -->
+		<action name="product_*" class="productAction" method="{1}">
+			<!-- 到商品详情页 -->
+			<result name="findByPid">/WEB-INF/jsp/product.jsp</result>
+			<!-- 根据一级分类分页查询商品 -->
+			<result name="findByCid">/WEB-INF/jsp/productList.jsp</result>
+			<!-- 根据二级分类分页查询商品 -->
+			<result name="findByCsid">/WEB-INF/jsp/productList.jsp</result>
+		</action>
+		<!-- 购物车模块 -->
+		<action name="cart_*" class="cartAction" method="{1}">
+			<!-- 添加到购物车 -->
+			<result name="addCart">/WEB-INF/jsp/cart.jsp</result>
+			<!-- 到购物车页面 -->
+			<result name="toCartPage">/WEB-INF/jsp/cart.jsp</result>
+		</action>
+		<!-- 订单模块 -->
+		<action name="order_*" class="orderAction" method="{1}">
+			<!-- session中没有user先去登录 -->
+			<result name="toLoginPage">/WEB-INF/jsp/login.jsp</result>
+			<!-- 跳转到支付页面 -->
+			<result name="save">/WEB-INF/jsp/order.jsp</result>
+			<!-- 支付成功 -->
+			<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+			<!-- 我的订单 -->
+			<result name="myOrders">/WEB-INF/jsp/orderList.jsp</result>
+			<!-- 确认收货 -->
+			<result name="updateStateSuccess" type="redirectAction">order_myOrders.action?page=1</result>
+		</action>
+		<!-- 后台管理员 -->
+		<action name="adminUser_*" class="adminUserAction" method="{1}">
+			<!-- 登录成功 -->
+			<result name="loginSuccess" type="redirect">/admin/home.jsp</result>
+			<!-- 登录失败 -->
+			<result name="toLoginPage">/admin/login.jsp</result>
+		</action>
+		<!-- 一级分类管理 -->
+		<action name="adminCategory_*" class="adminCategoryAction" method="{1}">
+			<!--查询所有一级分类  -->
+			<result name="findAll">/admin/category/list.jsp</result>
+			<!-- 添加一级分类 -->
+			<result name="saveSuccess" type="redirectAction">adminCategory_findAll.action</result>
+			<!-- 删除一级分类 -->
+			<result name="deleteSuccess" type="redirectAction">adminCategory_findAll.action</result>
+			<!-- 到修改页面 -->
+			<result name="edit">/admin/category/edit.jsp</result>
+			<!-- 修改成功 -->
+			<result name="updateSuccess" type="redirectAction">adminCategory_findAll.action</result>
+		</action>
+		<!-- 二级分类管理 -->
+		<action name="adminCategorySecond_*" class="adminCategorySecondAction" method="{1}">
+			<!-- 分页查询二级分类 -->
+			<result name="findAllByPage">/admin/categorysecond/list.jsp</result>
+			<!-- 跳转到添加二级分类的页面 -->
+			<result name="toAddPage">/admin/categorysecond/add.jsp</result>
+			<!-- 添加成功 -->
+			<result name="saveSuccess" type="redirectAction">adminCategorySecond_findAllByPage.action?page=1</result>
+			<!-- 删除成功 -->
+			<result name="deleteSuccess" type="redirectAction">adminCategorySecond_findAllByPage.action?page=1</result>
+			<!-- 到修改页面 -->
+			<result name="edit">/admin/categorysecond/edit.jsp</result>
+			<!-- 修改成功 -->
+			<result name="updateSuccess" type="redirectAction">adminCategorySecond_findAllByPage.action?page=1</result>
+		</action>
+		<!-- 商品管理模块 -->
+		<action name="adminProduct_*" class="adminProductAction" method="{1}">
+			<!-- 分页查询所有商品 -->
+			<result name="findAllByPage">/admin/product/list.jsp</result>
+			<!-- 到添加页面 -->
+			<result name="toAddPage">/admin/product/add.jsp</result>
+			<!-- 添加成功 -->
+			<result name="save" type="redirectAction">adminProduct_findAllByPage.action?page=1</result>
+			<!-- 删除 -->
+			<result name="deleteSuccess" type="redirectAction">adminProduct_findAllByPage.action?page=1</result>
+			<!-- 到修改页面 -->
+			<result name="edit">/admin/product/edit.jsp</result>
+			<!-- 修改成功 -->
+			<result name="update" type="redirectAction">adminProduct_findAllByPage.action?page=1</result>
+		</action>
+		<!-- 后台订单模块 -->
+		<action name="adminOrder_*" class="adminOrderAction" method="{1}">
+			<!-- 分页查询订单 -->
+			<result name="findAllByPage">/admin/order/list.jsp</result>
+			<!-- 根据订单状态查询订单 -->
+			<result name="findByState">/admin/order/list.jsp</result>
+			<!-- 异步查询订单详情 -->
+			<result name="show">/admin/order/show.jsp</result>
+			<!-- 发货 -->
+			<result name="updateState" type="redirectAction">adminOrder_findAllByPage.action?page=1</result>
+		</action>
+	</package>
+</struts>
